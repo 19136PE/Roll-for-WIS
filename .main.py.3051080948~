@@ -1,0 +1,35 @@
+from tkinter import *
+
+
+class menu:
+  
+  def __init__(self):
+    #common format for all buttons
+    #arial, size 12, bold, white text
+    button_font = ("Arial", "16", "bold")
+    button_fg = "#000000"
+    
+    self.temp_frame = Frame(padx=15, pady=10)
+    self.temp_frame.grid()
+    self.temp_heading = Label(self.temp_frame,
+                              text="quiz name",
+                              font=("Arial", "16", "bold"),
+                              justify="center")
+    self.temp_heading.grid(row=0, padx=10, pady=10)
+
+
+    self.to_help_button = Button(self.button_frame,
+                                 text="Help",
+                                 fg=button_fg,
+                                 font=button_font,
+                                 width=12)
+                                 #command=self.to_help
+                                
+    self.to_help_button.grid(row=2, column=0, padx=5, pady=10)
+
+#main rouine
+root = Tk()
+root.title("Quiz Name")
+#root.geometry("300x400")
+menu()
+root.mainloop()
