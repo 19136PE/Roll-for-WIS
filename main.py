@@ -1,5 +1,5 @@
-import tkinter
 from tkinter import *
+from functools import partial
 import random
 import time
 
@@ -63,8 +63,8 @@ class menu:
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
-                                 width=10)
-                                 #command=self.to_help
+                                 width=10,
+                                 command=self.to_help)
     self.to_help_button.grid(row=4, column=0, padx=6, pady=6)
 
     #button frame column 2 = scores/export button
@@ -87,6 +87,51 @@ class menu:
                                  #command=self.to_quiz
     self.to_start_quiz_button.grid(row=5, column=0, padx=6, pady=6)
 
+  def to_help(self):
+      DisplayHelp(self)
+
+
+class DisplayHelp:
+  
+  def __init__(self, partner):
+      self.help_box = Toplevel()
+
+      partner.to_help_button.config(state=DISABLED)
+
+      self.help_box.protocol('WM_DELETE_WINDOW',
+                           partial(self.close_help,partner))
+
+      self.help_frame = Frame(self.help_box)
+
+      self.help_frame.grid()
+
+      self.help_heading_label = Label(self.help_frame,
+                                    text="Help / Settings",
+                                    font=("Arial", "16", "bold"),
+                                    justify=CENTER)
+      self.help_heading_label.grid(row=0)
+
+      help_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\n" \
+    "Pellentesque nec nam aliquam sem et tortor consequat id. Pellentesque id nibh tortor id aliquet. Vitae elementum curabitur vitae nunc sed velit. \n\n" \
+    "Cras ornare arcu dui vivamus arcu. Tempus egestas sed sed risus pretium quam vulputate. Morbi tristique senectus et netus."
+
+      self.help_text_label = Label(self.help_frame,
+                                 text=help_text,
+                                 wrap=280,
+                                 font=("Arial", "10"),
+                                 justify=CENTER)
+      self.help_text_label.grid(row=1, padx=10)
+
+      self.dismiss_button = Button(self.help_frame,
+                                 font=("Arial", "12", "bold"),
+                                 text="Dismiss",
+                                 command=partial(self.close_help,partner))
+      self.dismiss_button.grid(row=2)
+
+  def close_help(self, partner):
+      partner.to_help_button.config(state=NORMAL)
+      self.help_box.destroy()
+  
 #main rouine
 root = Tk()
 root.title("Quiz Name")
