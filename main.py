@@ -3,20 +3,29 @@ from functools import partial
 import random
 import time
 
+#common format for all labels and buttons
+title_font = ("Arial", "18", "bold") #arial, size 16, bold
+description_font = ("Arial", "10") #arial, size 10
+score_font = ("Arial", "14") #arial, size 14
+button_font = ("Arial", "14") #arial, size 14
+quiz_button_font = ("Arial", "16") #arial, size 16
+button_fg = "#000000" #black text
+
+#score variables for last 10 scores
+r_score_1 = ""
+r_score_2 = ""
+r_score_3 = ""
+r_score_4 = ""
+r_score_5 = ""
+r_score_6 = ""
+r_score_7 = ""
+r_score_8 = ""
+r_score_9 = ""
+r_score_10 = ""
 
 class menu:
   
   def __init__(self):
-    
-    window_width = 300 #width of menu window
-    window_height = 400 #height of menu window
-    
-    #common format for all labels and buttons
-    title_font = ("Arial", "16", "bold") #arial, size 16, bold
-    description_font = ("Arial", "10") #arial, size 10
-    score_font = ("Arial", "16") #arial, size 16
-    button_font = ("Arial", "16") #arial, size 16
-    button_fg = "#000000" #black text
     
     #define grid layout
     self.main_frame = Frame(padx=15, pady=15)
@@ -34,7 +43,7 @@ class menu:
 
     #main frame row 1 = description
     self.main_heading = Label(self.main_frame,
-                              text="Description",
+                              text="Brief Description",
                               fg=button_fg,
                               font=(description_font),
                               justify=CENTER)
@@ -63,6 +72,8 @@ class menu:
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
                                  width=10,
                                  command=self.to_help)
     self.to_help_button.grid(row=4, column=0, padx=6, pady=6)
@@ -73,22 +84,29 @@ class menu:
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
-                                 width=10)
-                                 #command=self.to_score
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=10,
+                                 command=self.to_score)
     self.to_score_button.grid(row=4, column=1, padx=6, pady=6)
 
     #main frame row 5 = start/continue quiz button
     self.to_start_quiz_button = Button(self.main_frame,
-                                 text="Start Quiz",
+                                 text="Start / Continue Quiz",
                                  fg=button_fg,
-                                 font=(button_font),
+                                 font=(quiz_button_font),
                                  justify=CENTER,
-                                 width=23)
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=20)
                                  #command=self.to_quiz
     self.to_start_quiz_button.grid(row=5, column=0, padx=6, pady=6)
 
   def to_help(self):
       DisplayHelp(self)
+
+  def to_score(self):
+      DisplayScore(self)
 
 
 class DisplayHelp:
@@ -107,7 +125,7 @@ class DisplayHelp:
 
       self.help_heading_label = Label(self.help_frame,
                                     text="Help / Settings",
-                                    font=("Arial", "16", "bold"),
+                                    font=(description_font),
                                     justify=CENTER)
       self.help_heading_label.grid(row=0)
 
@@ -126,15 +144,56 @@ class DisplayHelp:
                                  font=("Arial", "12", "bold"),
                                  text="Dismiss",
                                  command=partial(self.close_help,partner))
-      self.dismiss_button.grid(row=2)
+      self.dismiss_button.grid(row=2, padx=6, pady=6)
 
   def close_help(self, partner):
       partner.to_help_button.config(state=NORMAL)
       self.help_box.destroy()
+
+
+class DisplayScore:
+  def __init__(self, partner):
+       self.score_box = Toplevel()
+
+       partner.to_score_button.config(state=DISABLED)
+
+       self.score_box.protocol('WM_DELETE_WINDOW',
+                           partial(self.close_score,partner))
+
+       self.score_frame = Frame(self.score_box)
+
+       self.score_frame.grid()
+       self.result_frame = Frame(self.score_frame)
+       self.result_frame.grid(row=1, column=0)
+
+       self.score_heading = Label(self.score_frame,
+                              text="Showing 10 Scores",
+                              fg=button_fg,
+                              font=(title_font),
+                              justify=CENTER)
+       self.score_heading.grid(row=0, padx=6, pady=6)
+
+       self.score_heading = Label(self.result_frame,
+                              text="1 {}".format(r_score_1),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_heading.grid(row=1, column=0, padx=6, pady=6)
+
+       self.score_heading = Label(self.result_frame,
+                              text="2 {}".format(r_score_2),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_heading.grid(row=1, column=1, padx=6, pady=6)
+
+
+  def close_score(self, partner):
+      partner.to_score_button.config(state=NORMAL)
+      self.score_box.destroy()
   
 #main rouine
 root = Tk()
 root.title("Quiz Name")
-#root.geometry("300x400")
 menu()
 root.mainloop()
