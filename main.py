@@ -3,6 +3,9 @@ from functools import partial
 import random
 import time
 
+#list of question for selecting
+question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+
 #common format for all labels and buttons
 title_font = ("Arial", "18", "bold") #arial, size 16, bold
 description_font = ("Arial", "10") #arial, size 10
@@ -11,24 +14,29 @@ button_font = ("Arial", "14") #arial, size 14
 quiz_button_font = ("Arial", "16") #arial, size 16
 button_fg = "#000000" #black text
 
-score = "0"
-question = "1"
+#scorekeeping and question variables
+score = ""
+questions_right = ""
+questions_total = ""
+quiz_active = "" #0 = not started, 1 = active quiz
 
-#score variables for last 10 scores
-r_score_1 = ""
-r_score_2 = ""
-r_score_3 = ""
-r_score_4 = ""
-r_score_5 = ""
-r_score_6 = ""
-r_score_7 = ""
-r_score_8 = ""
-r_score_9 = ""
-r_score_10 = ""
+#random quiz numbers
+question_1 = ""
+question_2 = ""
+question_3 = ""
+question_4 = ""
+question_5 = ""
+question_6 = ""
+question_7 = ""
+question_8 = ""
+question_9 = ""
+question_10 = ""
 
 class menu:
   
   def __init__(self):
+        
+    random.shuffle(question_number)
     
     #define grid layout
     self.main_frame = Frame(padx=15, pady=15)
@@ -62,7 +70,7 @@ class menu:
     
     #main frame row 3 = question number
     self.main_heading = Label(self.main_frame,
-                              text="Question 0/0",
+                              text="Question 0/10",
                               fg=button_fg,
                               font=(score_font),
                               justify=CENTER)
@@ -179,14 +187,14 @@ class DisplayScore:
        self.score_heading.grid(row=0, padx=6, pady=6)
 
        self.score_scores_1 = Label(self.result_frame,
-                              text="1 {}".format(r_score_1),
+                              text="1 {}".format("FIX"),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
        self.score_scores_1.grid(row=1, column=0, padx=6, pady=6)
 
        self.score_scores_2 = Label(self.result_frame,
-                              text="2 {}".format(r_score_2),
+                              text="2 {}".format("FIX"),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
@@ -200,18 +208,31 @@ class DisplayScore:
 
 class DisplayQuiz:
   def __init__(self, partner):
+       
        self.quiz_box = Toplevel()
 
        partner.to_quiz_button.config(state=DISABLED)
 
        self.quiz_box.protocol('WM_DELETE_WINDOW',
                            partial(self.close_quiz,partner))
-
+  
        self.quiz_frame = Frame(self.quiz_box)
        self.quiz_frame.grid()
 
+       print("{}".format(question_number[1]))
+       print("{}".format(question_number[2]))
+       print("{}".format(question_number[3]))
+       print("{}".format(question_number[4]))
+       print("{}".format(question_number[5]))
+       print("{}".format(question_number[6]))
+       print("{}".format(question_number[7]))
+       print("{}".format(question_number[8]))
+       print("{}".format(question_number[9]))
+       print("{}".format(question_number[10]))
+  
+       
        self.quiz_question = Label(self.quiz_frame,
-                                 text="Question",
+                                 text=(),
                                  fg=button_fg,
                                  font=(quiz_button_font),
                                  justify=CENTER)
