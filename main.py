@@ -11,6 +11,9 @@ button_font = ("Arial", "14") #arial, size 14
 quiz_button_font = ("Arial", "16") #arial, size 16
 button_fg = "#000000" #black text
 
+score = "0"
+question = "1"
+
 #score variables for last 10 scores
 r_score_1 = ""
 r_score_2 = ""
@@ -91,24 +94,27 @@ class menu:
     self.to_score_button.grid(row=4, column=1, padx=6, pady=6)
 
     #main frame row 5 = start/continue quiz button
-    self.to_start_quiz_button = Button(self.main_frame,
+    self.to_quiz_button = Button(self.main_frame,
                                  text="Start / Continue Quiz",
                                  fg=button_fg,
                                  font=(quiz_button_font),
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
-                                 width=20)
-                                 #command=self.to_quiz
-    self.to_start_quiz_button.grid(row=5, column=0, padx=6, pady=6)
+                                 width=20,
+                                 command=self.to_quiz)
+    self.to_quiz_button.grid(row=5, column=0, padx=6, pady=6)
 
   def to_help(self):
       DisplayHelp(self)
 
   def to_score(self):
       DisplayScore(self)
+  
+  def to_quiz(self):
+      DisplayQuiz(self)
 
-
+  
 class DisplayHelp:
   
   def __init__(self, partner):
@@ -125,9 +131,9 @@ class DisplayHelp:
 
       self.help_heading_label = Label(self.help_frame,
                                     text="Help / Settings",
-                                    font=(description_font),
+                                    font=(title_font),
                                     justify=CENTER)
-      self.help_heading_label.grid(row=0)
+      self.help_heading_label.grid(row=0, pady=6)
 
       help_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\n" \
     "Pellentesque nec nam aliquam sem et tortor consequat id. Pellentesque id nibh tortor id aliquet. Vitae elementum curabitur vitae nunc sed velit. \n\n" \
@@ -135,10 +141,10 @@ class DisplayHelp:
 
       self.help_text_label = Label(self.help_frame,
                                  text=help_text,
-                                 wrap=280,
-                                 font=("Arial", "10"),
+                                 wraplength=280,
+                                 font=(description_font),
                                  justify=CENTER)
-      self.help_text_label.grid(row=1, padx=10)
+      self.help_text_label.grid(row=1, padx=12, pady=6)
 
       self.dismiss_button = Button(self.help_frame,
                                  font=("Arial", "12", "bold"),
@@ -161,7 +167,6 @@ class DisplayScore:
                            partial(self.close_score,partner))
 
        self.score_frame = Frame(self.score_box)
-
        self.score_frame.grid()
        self.result_frame = Frame(self.score_frame)
        self.result_frame.grid(row=1, column=0)
@@ -173,24 +178,88 @@ class DisplayScore:
                               justify=CENTER)
        self.score_heading.grid(row=0, padx=6, pady=6)
 
-       self.score_heading = Label(self.result_frame,
+       self.score_scores_1 = Label(self.result_frame,
                               text="1 {}".format(r_score_1),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
-       self.score_heading.grid(row=1, column=0, padx=6, pady=6)
+       self.score_scores_1.grid(row=1, column=0, padx=6, pady=6)
 
-       self.score_heading = Label(self.result_frame,
+       self.score_scores_2 = Label(self.result_frame,
                               text="2 {}".format(r_score_2),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
-       self.score_heading.grid(row=1, column=1, padx=6, pady=6)
+       self.score_scores_2.grid(row=1, column=1, padx=6, pady=6)
 
 
   def close_score(self, partner):
       partner.to_score_button.config(state=NORMAL)
       self.score_box.destroy()
+
+
+class DisplayQuiz:
+  def __init__(self, partner):
+       self.quiz_box = Toplevel()
+
+       partner.to_quiz_button.config(state=DISABLED)
+
+       self.quiz_box.protocol('WM_DELETE_WINDOW',
+                           partial(self.close_quiz,partner))
+
+       self.quiz_frame = Frame(self.quiz_box)
+       self.quiz_frame.grid()
+
+       self.quiz_question = Label(self.quiz_frame,
+                                 text="Question",
+                                 fg=button_fg,
+                                 font=(quiz_button_font),
+                                 justify=CENTER)
+       self.quiz_question.grid(row=0, padx=12, pady=12)
+
+       self.quiz_a_button = Button(self.quiz_frame,
+                                 text="Answer A",
+                                 fg=button_fg,
+                                 font=(button_font),
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=15)
+       self.quiz_a_button.grid(row=1, padx=12, pady=8)
+
+       self.quiz_b_button = Button(self.quiz_frame,
+                                 text="Answer B",
+                                 fg=button_fg,
+                                 font=(button_font),
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=15)
+       self.quiz_b_button.grid(row=2, padx=12, pady=8)
+
+       self.quiz_c_button = Button(self.quiz_frame,
+                                 text="Answer C",
+                                 fg=button_fg,
+                                 font=(button_font),
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=15)
+       self.quiz_c_button.grid(row=3, padx=12, pady=8)
+
+       self.quiz_d_button = Button(self.quiz_frame,
+                                 text="Answer D",
+                                 fg=button_fg,
+                                 font=(button_font),
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=15)
+       self.quiz_d_button.grid(row=4, padx=12, pady=8)
+
+  def close_quiz(self, partner):
+      partner.to_quiz_button.config(state=NORMAL)
+      self.quiz_box.destroy()
   
 #main rouine
 root = Tk()
