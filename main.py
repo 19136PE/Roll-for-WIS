@@ -4,7 +4,9 @@ import random
 import time
 
 #list of question for selecting
-question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,                     21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+
+random_answer = [1, 2, 3, 4]
 
 #common format for all labels and buttons
 title_font = ("Arial", "18", "bold") #arial, size 16, bold
@@ -17,8 +19,7 @@ button_fg = "#000000" #black text
 #scorekeeping and question variables
 score = ""
 questions_right = ""
-questions_total = ""
-quiz_active = "" #0 = not started, 1 = active quiz
+questions_total = 0
 
 #random quiz numbers
 question_1 = ""
@@ -36,6 +37,7 @@ class menu:
   
   def __init__(self):
         
+    #shuffle list options for first 10 questions
     random.shuffle(question_number)
     
     #define grid layout
@@ -143,8 +145,8 @@ class DisplayHelp:
                                     justify=CENTER)
       self.help_heading_label.grid(row=0, pady=6)
 
-      help_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\n" \
-    "Pellentesque nec nam aliquam sem et tortor consequat id. Pellentesque id nibh tortor id aliquet. Vitae elementum curabitur vitae nunc sed velit. \n\n" \
+      help_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  " \
+    "Pellentesque nec nam aliquam sem et tortor consequat id. Pellentesque id nibh tortor id aliquet. Vitae elementum curabitur vitae nunc sed velit. " \
     "Cras ornare arcu dui vivamus arcu. Tempus egestas sed sed risus pretium quam vulputate. Morbi tristique senectus et netus."
 
       self.help_text_label = Label(self.help_frame,
@@ -209,6 +211,8 @@ class DisplayScore:
 class DisplayQuiz:
   def __init__(self, partner):
        
+       random.shuffle(random_answer)
+       
        self.quiz_box = Toplevel()
 
        partner.to_quiz_button.config(state=DISABLED)
@@ -219,6 +223,7 @@ class DisplayQuiz:
        self.quiz_frame = Frame(self.quiz_box)
        self.quiz_frame.grid()
 
+       print("{}".format(question_number[0]))
        print("{}".format(question_number[1]))
        print("{}".format(question_number[2]))
        print("{}".format(question_number[3]))
@@ -228,55 +233,75 @@ class DisplayQuiz:
        print("{}".format(question_number[7]))
        print("{}".format(question_number[8]))
        print("{}".format(question_number[9]))
-       print("{}".format(question_number[10]))
+       print("")
+
+       with open("questions.txt", "r") as file:
+           list_of_questions = file.readlines()
+         
+       with open("answers(1).txt", "r") as file:
+           list_of_answers_1 = file.readlines()
+         
+       with open("answers(2).txt", "r") as file:
+           list_of_answers_2 = file.readlines()
+         
+       with open("answers(3).txt", "r") as file:
+           list_of_answers_3 = file.readlines()
+         
+       with open("answers(4).txt", "r") as file:
+           list_of_answers_4 = file.readlines()
   
        
        self.quiz_question = Label(self.quiz_frame,
-                                 text=(),
+                                 text=(list_of_questions[question_number[questions_total]]),
+                                 wraplength=("200"),
                                  fg=button_fg,
                                  font=(quiz_button_font),
                                  justify=CENTER)
        self.quiz_question.grid(row=0, padx=12, pady=12)
 
        self.quiz_a_button = Button(self.quiz_frame,
-                                 text="Answer A",
+                                 text=(list_of_answers_1[question_number[questions_total]]),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15)
-       self.quiz_a_button.grid(row=1, padx=12, pady=8)
+       self.activeRow = random_answer[0]
+       self.quiz_a_button.grid(row=self.activeRow, padx=12, pady=8)
 
        self.quiz_b_button = Button(self.quiz_frame,
-                                 text="Answer B",
+                                 text=(list_of_answers_2[question_number[questions_total]]),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15)
-       self.quiz_b_button.grid(row=2, padx=12, pady=8)
+       self.activeRow = random_answer[1]
+       self.quiz_b_button.grid(row=self.activeRow, padx=12, pady=8)
 
        self.quiz_c_button = Button(self.quiz_frame,
-                                 text="Answer C",
+                                 text=(list_of_answers_3[question_number[questions_total]]),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15)
-       self.quiz_c_button.grid(row=3, padx=12, pady=8)
+       self.activeRow = random_answer[2]
+       self.quiz_c_button.grid(row=self.activeRow, padx=12, pady=8)
 
        self.quiz_d_button = Button(self.quiz_frame,
-                                 text="Answer D",
+                                 text=(list_of_answers_4[question_number[questions_total]]),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15)
-       self.quiz_d_button.grid(row=4, padx=12, pady=8)
+       self.activeRow = random_answer[3]
+       self.quiz_d_button.grid(row=self.activeRow, padx=12, pady=8)
 
   def close_quiz(self, partner):
       partner.to_quiz_button.config(state=NORMAL)
