@@ -6,6 +6,7 @@ import time
 #list of question for selecting
 question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,                     21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
+#list for answer randomizing
 random_answer = [1, 2, 3, 4]
 
 #common format for all labels and buttons
@@ -16,22 +17,10 @@ button_font = ("Arial", "14") #arial, size 14
 quiz_button_font = ("Arial", "16") #arial, size 16
 button_fg = "#000000" #black text
 
-#scorekeeping and question variables
-score = ""
-questions_right = ""
+#scorekeeping and question total variables
+score = 0
+questions_right = 0
 questions_total = 0
-
-#random quiz numbers
-question_1 = ""
-question_2 = ""
-question_3 = ""
-question_4 = ""
-question_5 = ""
-question_6 = ""
-question_7 = ""
-question_8 = ""
-question_9 = ""
-question_10 = ""
 
 class menu:
   
@@ -39,6 +28,9 @@ class menu:
         
     #shuffle list options for first 10 questions
     random.shuffle(question_number)
+    questions_right = 0
+    questions_total = 0
+
     
     #define grid layout
     self.main_frame = Frame(padx=15, pady=15)
@@ -266,7 +258,8 @@ class DisplayQuiz:
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
-                                 width=15)
+                                 width=15,
+                                 command=self.correct_answer)
        self.activeRow = random_answer[0]
        self.quiz_a_button.grid(row=self.activeRow, padx=12, pady=8)
 
@@ -277,7 +270,8 @@ class DisplayQuiz:
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
-                                 width=15)
+                                 width=15,
+                                 command=self.incorrect_answer)
        self.activeRow = random_answer[1]
        self.quiz_b_button.grid(row=self.activeRow, padx=12, pady=8)
 
@@ -288,7 +282,8 @@ class DisplayQuiz:
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
-                                 width=15)
+                                 width=15,
+                                 command=self.incorrect_answer)
        self.activeRow = random_answer[2]
        self.quiz_c_button.grid(row=self.activeRow, padx=12, pady=8)
 
@@ -299,10 +294,35 @@ class DisplayQuiz:
                                  justify=CENTER,
                                  borderwidth=2,
                                  relief=SOLID,
-                                 width=15)
+                                 width=15,
+                                 command=self.incorrect_answer)
        self.activeRow = random_answer[3]
        self.quiz_d_button.grid(row=self.activeRow, padx=12, pady=8)
 
+  
+  def correct_answer(self):
+      print("correct")
+      self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED, disabledforeground="#000000")
+      self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+      self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+      self.quiz_d_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+    
+      #questions_total = questions_total + 1
+      #questions_right = questions_right + 1
+
+      self.quiz_box.after(3500,lambda:self.quiz_box.destroy())
+
+  def incorrect_answer(self):
+      print("incorrect")
+      self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED, disabledforeground="#000000")
+      self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+      self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+      self.quiz_d_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+    
+      #question_number += 1
+    
+      self.quiz_box.after(3500,lambda:self.quiz_box.destroy())
+  
   def close_quiz(self, partner):
       partner.to_quiz_button.config(state=NORMAL)
       self.quiz_box.destroy()
