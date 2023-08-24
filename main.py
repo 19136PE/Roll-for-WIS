@@ -23,14 +23,10 @@ questions_right = 0
 questions_total = 0
 
 class menu:
-  
   def __init__(self):
-        
+    
     #shuffle list options for first 10 questions
     random.shuffle(question_number)
-    questions_right = 0
-    questions_total = 0
-
     
     #define grid layout
     self.main_frame = Frame(padx=15, pady=15)
@@ -47,28 +43,28 @@ class menu:
     self.main_heading.grid(row=0, padx=6, pady=6)
 
     #main frame row 1 = description
-    self.main_heading = Label(self.main_frame,
+    self.quiz_description = Label(self.main_frame,
                               text="Brief Description",
                               fg=button_fg,
                               font=(description_font),
                               justify=CENTER)
-    self.main_heading.grid(row=1, padx=6, pady=6)
+    self.quiz_description.grid(row=1, padx=6, pady=6)
     
     #main frame row 2 = score
-    self.main_heading = Label(self.main_frame,
+    self.current_score = Label(self.main_frame,
                               text="Score: 0",
                               fg=button_fg,
                               font=(score_font),
                               justify=CENTER)
-    self.main_heading.grid(row=2, padx=6, pady=6)
+    self.current_score.grid(row=2, padx=6, pady=6)
     
     #main frame row 3 = question number
-    self.main_heading = Label(self.main_frame,
+    self.current_question = Label(self.main_frame,
                               text="Question 0/10",
                               fg=button_fg,
                               font=(score_font),
                               justify=CENTER)
-    self.main_heading.grid(row=3, padx=6, pady=6)
+    self.current_question.grid(row=3, padx=6, pady=6)
     
     #main frame row 4 = help and score buttons
     #button frame column 1 = help/settings button
@@ -97,7 +93,7 @@ class menu:
 
     #main frame row 5 = start/continue quiz button
     self.to_quiz_button = Button(self.main_frame,
-                                 text="Start / Continue Quiz",
+                                 text="Start Quiz",
                                  fg=button_fg,
                                  font=(quiz_button_font),
                                  justify=CENTER,
@@ -118,7 +114,6 @@ class menu:
 
   
 class DisplayHelp:
-  
   def __init__(self, partner):
       self.help_box = Toplevel()
 
@@ -241,7 +236,6 @@ class DisplayQuiz:
          
        with open("answers(4).txt", "r") as file:
            list_of_answers_4 = file.readlines()
-  
        
        self.quiz_question = Label(self.quiz_frame,
                                  text=(list_of_questions[question_number[questions_total]]),
@@ -259,7 +253,7 @@ class DisplayQuiz:
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15,
-                                 command=self.correct_answer)
+                                 command=lambda:self.correct_answer(partner))
        self.activeRow = random_answer[0]
        self.quiz_a_button.grid(row=self.activeRow, padx=12, pady=8)
 
@@ -271,7 +265,7 @@ class DisplayQuiz:
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15,
-                                 command=self.incorrect_answer)
+                                 command=lambda:self.incorrect_answer(partner))
        self.activeRow = random_answer[1]
        self.quiz_b_button.grid(row=self.activeRow, padx=12, pady=8)
 
@@ -283,7 +277,7 @@ class DisplayQuiz:
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15,
-                                 command=self.incorrect_answer)
+                                 command=lambda:self.incorrect_answer(partner))
        self.activeRow = random_answer[2]
        self.quiz_c_button.grid(row=self.activeRow, padx=12, pady=8)
 
@@ -295,37 +289,79 @@ class DisplayQuiz:
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=15,
-                                 command=self.incorrect_answer)
+                                 command=lambda:self.incorrect_answer(partner))
        self.activeRow = random_answer[3]
        self.quiz_d_button.grid(row=self.activeRow, padx=12, pady=8)
 
   
-  def correct_answer(self):
+  def correct_answer(self, partner):
+      
+      global questions_right
+      global questions_total
+    
       print("correct")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED, disabledforeground="#000000")
       self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
       self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
       self.quiz_d_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
+
+      questions_right += 1
+      questions_total += 1
+      
+      self.quiz_box.after(2500,lambda:self.quiz_box.destroy())
+      partner.current_question.config(text="Question {}/10".format(questions_total))
+      partner.current_score.config(text="Score: {}".format(questions_right))
+      partner.to_quiz_button.config(state=NORMAL)
+
+      if questions_total >= 10:
+        partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
+        print("end")
+      else:
+        partner.to_quiz_button.config(text="Continue Quiz", state=NORMAL)
+
+  
+  def incorrect_answer(self, partner):
+      
+      global questions_total
     
-      #questions_total = questions_total + 1
-      #questions_right = questions_right + 1
-
-      self.quiz_box.after(3500,lambda:self.quiz_box.destroy())
-
-  def incorrect_answer(self):
       print("incorrect")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED, disabledforeground="#000000")
       self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
       self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
       self.quiz_d_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
     
-      #question_number += 1
-    
-      self.quiz_box.after(3500,lambda:self.quiz_box.destroy())
+      questions_total += 1
+      
+      self.quiz_box.after(2500,lambda:self.quiz_box.destroy())
+      partner.current_question.config(text="Question {}/10".format(questions_total))
+
+      if questions_total >= 10:
+        partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
+        print("end")
+      else:
+        partner.to_quiz_button.config(text="Continue Quiz", state=NORMAL)
   
   def close_quiz(self, partner):
       partner.to_quiz_button.config(state=NORMAL)
       self.quiz_box.destroy()
+
+  def finish_quiz(self):
+      FinishQuiz()
+
+
+class FinishQuiz:
+  def __init__(self):
+      self.finish_frame = Frame(padx=15, pady=15)
+      self.finish_frame.grid(row=2, column=0)
+
+      self.quiz_description = Label(self.finish_frame,
+                              text="{}".format(),
+                              fg=button_fg,
+                              font=(title_font),
+                              justify=CENTER)
+      self.quiz_description.grid(row=0, padx=6, pady=6)
+
+      
   
 #main rouine
 root = Tk()
