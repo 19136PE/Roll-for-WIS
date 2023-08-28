@@ -336,8 +336,9 @@ class DisplayQuiz:
       partner.current_question.config(text="Question {}/10".format(questions_total))
 
       if questions_total >= 10:
-        partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
+        #partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
         print("end")
+        self.finish_quiz()
       else:
         partner.to_quiz_button.config(text="Continue Quiz", state=NORMAL)
   
@@ -346,20 +347,57 @@ class DisplayQuiz:
       self.quiz_box.destroy()
 
   def finish_quiz(self):
-      FinishQuiz()
+      FinishQuiz(self)
 
 
 class FinishQuiz:
-  def __init__(self):
-      self.finish_frame = Frame(padx=15, pady=15)
+  def __init__(self, partner):
+
+      congrats = ["Congrats", "Congradulations", "Ka Pai", "Good Work", "Amazing", "WOOOOOO"]
+      random.shuffle(congrats)
+    
+      self.finish_box = Toplevel()
+      self.finish_frame = Frame(self.finish_box, padx=15, pady=15)
       self.finish_frame.grid(row=2, column=0)
 
-      self.quiz_description = Label(self.finish_frame,
-                              text="{}".format(),
+      self.finish_box.protocol('WM_DELETE_WINDOW',
+                           partial(self.close_finish_quiz,partner))
+      
+      self.finish_congrats = Label(self.finish_frame,
+                              text="{}!".format(congrats[0]),
                               fg=button_fg,
                               font=(title_font),
                               justify=CENTER)
-      self.quiz_description.grid(row=0, padx=6, pady=6)
+      self.finish_congrats.grid(row=0, padx=6, pady=6)
+
+      self.final_score = Label(self.finish_frame,
+                                 text=("{} / 10".format(questions_right)),
+                                 fg=button_fg,
+                                 font=(score_font),
+                                 justify=CENTER)
+      self.final_score.grid(row=1, padx=12, pady=12)
+
+      self.finish_quiz_button = Button(self.finish_frame,
+                                 text=("Finish Quiz"),
+                                 fg=button_fg,
+                                 font=(quiz_button_font),
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=16,
+                                 command=lambda:self.close_finish_quiz(partner))
+      self.finish_quiz_button.grid(row=2, padx=12, pady=12)
+
+  def close_finish_quiz(self, partner):
+      global questions_total
+      global questions_right
+      print("close")
+      partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
+      self.finish_box.destroy()
+      questions_total = 0
+      questions_right = 0
+      partner.current_question.config(text=("Question {}/10".format(questions_total)))
+      partner.current_score.config(text=("Score: {}".format(questions_right)))
 
       
   
