@@ -9,6 +9,8 @@ question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
 #list for answer randomizing
 random_answer = [1, 2, 3, 4]
 
+congrats = ["Congrats", "Congradulations", "Ka Pai", "Good Work", "Amazing", "WOOOOOO"]
+
 #common format for all labels and buttons
 title_font = ("Arial", "18", "bold") #arial, size 16, bold
 description_font = ("Arial", "10") #arial, size 10
@@ -29,7 +31,7 @@ class menu:
     random.shuffle(question_number)
     
     #define grid layout
-    self.main_frame = Frame(padx=15, pady=15)
+    self.main_frame = Frame(padx=6, pady=6)
     self.main_frame.grid(row=5, column=0)
     self.button_frame = Frame(self.main_frame)
     self.button_frame.grid(row=4, column=0)
@@ -102,6 +104,14 @@ class menu:
                                  width=20,
                                  command=self.to_quiz)
     self.to_quiz_button.grid(row=5, column=0, padx=6, pady=6)
+
+    self.quiz_results = Label(self.main_frame,
+                              text="",
+                              fg="#228B22",
+                              font=description_font,
+                              justify=CENTER)
+    self.quiz_results.grid(row=6, column=0, padx=3, pady=0)
+    
 
   def to_help(self):
       DisplayHelp(self)
@@ -296,33 +306,44 @@ class DisplayQuiz:
   
   def correct_answer(self, partner):
       
-      global questions_right
       global questions_total
+      global questions_right
     
       print("correct")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED, disabledforeground="#000000")
       self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
       self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
       self.quiz_d_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED, disabledforeground="#000000")
-
+    
       questions_right += 1
       questions_total += 1
       
       self.quiz_box.after(2500,lambda:self.quiz_box.destroy())
-      partner.current_question.config(text="Question {}/10".format(questions_total))
       partner.current_score.config(text="Score: {}".format(questions_right))
-      partner.to_quiz_button.config(state=NORMAL)
+      partner.current_question.config(text="Question {}/10".format(questions_total))
 
       if questions_total >= 10:
-        partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
         print("end")
+        random.shuffle(question_number)
+        random.shuffle(congrats)
+        partner.current_question.config(text=("Question 0/10".format(questions_total)))
+        partner.current_score.config(text=("Score: 0".format(questions_right)))
+        partner.to_quiz_button.config(text="Start Quiz", state=NORMAL)
+        if questions_right >= 5:
+          partner.quiz_results.config(text="{}! You got {}/10".format(congrats[1], questions_right))
+        else:
+          partner.quiz_results.config(text="Nice try, you got {}/10".format(questions_right))
+        questions_total = 0
+        questions_right = 0
       else:
+        partner.quiz_results.config(text="")
         partner.to_quiz_button.config(text="Continue Quiz", state=NORMAL)
 
   
   def incorrect_answer(self, partner):
       
       global questions_total
+      global questions_right
     
       print("incorrect")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED, disabledforeground="#000000")
@@ -336,70 +357,25 @@ class DisplayQuiz:
       partner.current_question.config(text="Question {}/10".format(questions_total))
 
       if questions_total >= 10:
-        #partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
         print("end")
-        self.finish_quiz()
+        random.shuffle(question_number)
+        random.shuffle(congrats)
+        partner.current_question.config(text=("Question 0/10".format(questions_total)))
+        partner.current_score.config(text=("Score: 0".format(questions_right)))
+        partner.to_quiz_button.config(text="Start Quiz", state=NORMAL)
+        if questions_right >= 5:
+          partner.quiz_results.config(text="{}! You got {}/10".format(congrats[1], questions_right))
+        else:
+          partner.quiz_results.config(text="Nice try, you got {}/10".format(questions_right))
+        questions_total = 0
+        questions_right = 0
       else:
+        partner.quiz_results.config(text="")
         partner.to_quiz_button.config(text="Continue Quiz", state=NORMAL)
   
   def close_quiz(self, partner):
       partner.to_quiz_button.config(state=NORMAL)
       self.quiz_box.destroy()
-
-  def finish_quiz(self):
-      FinishQuiz(self)
-
-
-class FinishQuiz:
-  def __init__(self, partner):
-
-      congrats = ["Congrats", "Congradulations", "Ka Pai", "Good Work", "Amazing", "WOOOOOO"]
-      random.shuffle(congrats)
-    
-      self.finish_box = Toplevel()
-      self.finish_frame = Frame(self.finish_box, padx=15, pady=15)
-      self.finish_frame.grid(row=2, column=0)
-
-      self.finish_box.protocol('WM_DELETE_WINDOW',
-                           partial(self.close_finish_quiz,partner))
-      
-      self.finish_congrats = Label(self.finish_frame,
-                              text="{}!".format(congrats[0]),
-                              fg=button_fg,
-                              font=(title_font),
-                              justify=CENTER)
-      self.finish_congrats.grid(row=0, padx=6, pady=6)
-
-      self.final_score = Label(self.finish_frame,
-                                 text=("{} / 10".format(questions_right)),
-                                 fg=button_fg,
-                                 font=(score_font),
-                                 justify=CENTER)
-      self.final_score.grid(row=1, padx=12, pady=12)
-
-      self.finish_quiz_button = Button(self.finish_frame,
-                                 text=("Finish Quiz"),
-                                 fg=button_fg,
-                                 font=(quiz_button_font),
-                                 justify=CENTER,
-                                 borderwidth=2,
-                                 relief=SOLID,
-                                 width=16,
-                                 command=lambda:self.close_finish_quiz(partner))
-      self.finish_quiz_button.grid(row=2, padx=12, pady=12)
-
-  def close_finish_quiz(self, partner):
-      global questions_total
-      global questions_right
-      print("close")
-      partner.to_quiz_button.config(text="Start Quiz", state=DISABLED)
-      self.finish_box.destroy()
-      questions_total = 0
-      questions_right = 0
-      partner.current_question.config(text=("Question {}/10".format(questions_total)))
-      partner.current_score.config(text=("Score: {}".format(questions_right)))
-
-      
   
 #main rouine
 root = Tk()
