@@ -1,8 +1,8 @@
 vv  Questions go Below  vv
-q1
-q2
-q3
-q4
+Which of the following classes does NOT have a hit di of d8?
+The Wisdom Stat affects all of the following skills EXCEPT?
+Which of the following is NOT one of the six basic stats?
+How do you roll for Initiative?
 q5
 q6
 q7

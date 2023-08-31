@@ -1,8 +1,8 @@
 vv  INCORRECT Answers go Below  vv
-a1 (3)
-a2 (3)
-a3 (3)
-a4 (3)
+Druid
+Medicine
+Charisma
+d10 +/- your DEX
 a5 (3)
 a6 (3)
 a7 (3)
