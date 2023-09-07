@@ -1,7 +1,6 @@
-from tkinter import *
-from functools import partial
 import random
-import time
+from functools import partial
+from tkinter import *
 
 #list of question for selecting
 question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
@@ -262,8 +261,19 @@ class DisplayQuiz:
        with open("answers(4).txt", "r") as file:
            list_of_answers_4 = file.readlines()
        
+       q = list_of_questions[question_number[questions_total]]
+       question = q.strip()
+       a1 = list_of_answers_1[question_number[questions_total]]
+       answer1 = a1.strip()
+       a2 = list_of_answers_2[question_number[questions_total]]
+       answer2 = a2.strip()
+       a3 = list_of_answers_3[question_number[questions_total]]
+       answer3 = a3.strip()
+       a4 = list_of_answers_4[question_number[questions_total]]
+       answer4 = a4.strip()
+    
        self.quiz_question = Label(self.quiz_frame,
-                                 text=(list_of_questions[question_number[questions_total]]),
+                                 text=(question),
                                  wraplength=("200"),
                                  fg=button_fg,
                                  font=(quiz_button_font),
@@ -271,7 +281,7 @@ class DisplayQuiz:
        self.quiz_question.grid(row=0, padx=12, pady=12)
 
        self.quiz_a_button = Button(self.quiz_frame,
-                                 text=(list_of_answers_1[question_number[questions_total]]),
+                                 text=(answer1),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
@@ -284,7 +294,7 @@ class DisplayQuiz:
        self.quiz_a_button.grid(row=self.activeRow, padx=12, pady=8)
 
        self.quiz_b_button = Button(self.quiz_frame,
-                                 text=(list_of_answers_2[question_number[questions_total]]),
+                                 text=(answer2),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
@@ -297,7 +307,7 @@ class DisplayQuiz:
        self.quiz_b_button.grid(row=self.activeRow, padx=12, pady=8)
 
        self.quiz_c_button = Button(self.quiz_frame,
-                                 text=(list_of_answers_3[question_number[questions_total]]),
+                                 text=(answer3),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
@@ -310,7 +320,7 @@ class DisplayQuiz:
        self.quiz_c_button.grid(row=self.activeRow, padx=12, pady=8)
 
        self.quiz_d_button = Button(self.quiz_frame,
-                                 text=(list_of_answers_4[question_number[questions_total]]),
+                                 text=(answer4),
                                  fg=button_fg,
                                  font=(button_font),
                                  justify=CENTER,
@@ -355,8 +365,8 @@ class DisplayQuiz:
         print("end")
         random.shuffle(question_number)
         random.shuffle(congrats)
-        partner.current_question.config(text=("Question 0/10".format(questions_total)))
-        partner.current_score.config(text=("Score: 0".format(questions_right)))
+        partner.current_question.config(text=("Question 0/10".format()))
+        partner.current_score.config(text=("Score: 0".format()))
         partner.to_quiz_button.config(text="Start Quiz", state=NORMAL)
         if questions_right >= 5:
           partner.quiz_results.config(text="{}! You got {}/10".format(congrats[1], questions_right))
@@ -420,6 +430,9 @@ class DisplayQuiz:
       global inc9
       global inc10     
 
+      q = list_of_questions[question_number[questions_total]]
+      question = q.strip()
+    
       print("incorrect")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED)
       self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
@@ -429,25 +442,25 @@ class DisplayQuiz:
       questions_total += 1
     
       if questions_total == 1: 
-        inc1 = list_of_questions[question_number[questions_total - 1]]
+        inc1 = question
       elif questions_total == 2: 
-        inc2 = list_of_questions[question_number[questions_total - 1]]
+        inc2 = question
       elif questions_total == 3: 
-        inc3 = list_of_questions[question_number[questions_total - 1]]
+        inc3 = question
       elif questions_total == 4: 
-        inc4 = list_of_questions[question_number[questions_total - 1]]
+        inc4 = question
       elif questions_total == 5: 
-        inc5 = list_of_questions[question_number[questions_total - 1]]
+        inc5 = question
       elif questions_total == 6: 
-        inc6 = list_of_questions[question_number[questions_total - 1]]
+        inc6 = question
       elif questions_total == 7: 
-        inc7 = list_of_questions[question_number[questions_total - 1]]
+        inc7 = question
       elif questions_total == 8: 
-        inc8 = list_of_questions[question_number[questions_total - 1]]
+        inc8 = question
       elif questions_total == 9: 
-        inc9 = list_of_questions[question_number[questions_total - 1]]
+        inc9 = question
       elif questions_total == 10: 
-        inc10 = list_of_questions[question_number[questions_total - 1]]
+        inc10 = question
 
       self.quiz_box.after(2500,lambda:self.quiz_box.destroy())
       partner.current_question.config(text="Question {}/10".format(questions_total))
@@ -456,15 +469,21 @@ class DisplayQuiz:
         print("end")
         random.shuffle(question_number)
         random.shuffle(congrats)
-        partner.current_question.config(text=("Question 0/10".format(questions_total)))
-        partner.current_score.config(text=("Score: 0".format(questions_right)))
+        partner.current_question.config(text=("Question 0/10".format()))
+        partner.current_score.config(text=("Score: 0".format()))
         partner.to_quiz_button.config(text="Start Quiz", state=NORMAL)
         
         with open('score.txt', 'r') as file:
             data = file.readlines()
-        data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
+        data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {} ".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
         with open("score.txt", "w") as file:
-            file.writelines(data)
+            file.writelines("{}".format(data))
+
+        with open('scoreboard.txt', 'r') as file:
+            data = file.readlines()
+        data.insert(0, "{}/10".format(questions_right))
+        with open("scoreboard.txt", "w") as file:
+            file.writelines("{}".format(data))
 
         inc1 = ""
         inc2 = ""
@@ -479,23 +498,6 @@ class DisplayQuiz:
         
         if questions_right >= 5:
           partner.quiz_results.config(text="{}! You got {}/10".format(congrats[1], questions_right))
-
-          with open('score.txt', 'r') as file:
-              data = file.readlines()
-          data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
-          with open("score.txt", "w") as file:
-              file.writelines(data)
-
-          inc1 = ""
-          inc2 = ""
-          inc3 = ""
-          inc4 = ""
-          inc5 = ""
-          inc6 = ""
-          inc7 = ""
-          inc8 = ""
-          inc9 = ""
-          inc10 = ""
         
         else:
           partner.quiz_results.config(text="Nice try, you got {}/10".format(questions_right))
