@@ -11,7 +11,7 @@ with open("questions.txt", "r") as file:
 #list for answer randomizing
 random_answer = [1, 2, 3, 4]
 
-congrats = ["Congrats", "Congradulations", "Ka Pai", "Good Work", "Amazing", "WOOOOOO"]
+congrats = ["Congrats", "Congradulations", "Ka Pai", "Good Work", "Amazing", "WOOOOOO", "Outstanding", "Nothing can stop you"]
 
 #common format for all labels and buttons
 title_font = ("Arial", "18", "bold") #arial, size 16, bold
@@ -42,6 +42,11 @@ class menu:
     
     #shuffle list options for first 10 questions
     random.shuffle(question_number)
+
+    with open('score.txt', 'w') as file:
+        file.writelines("")
+    with open('scoreboard.txt', 'w') as file:
+        file.writelines("")
     
     #define grid layout
     self.main_frame = Frame(padx=6, pady=3)
@@ -204,14 +209,14 @@ class DisplayScore:
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
-       self.score_scores_1.grid(row=1, column=0, padx=6, pady=6)
+       self.score_scores_1.grid(row=1, column=0, padx=40, pady=6)
 
        self.score_scores_2 = Label(self.result_frame,
                               text="2 {}".format("FIX"),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
-       self.score_scores_2.grid(row=1, column=1, padx=6, pady=6)
+       self.score_scores_2.grid(row=1, column=1, padx=40, pady=6)
 
 
   def close_score(self, partner):
@@ -469,15 +474,17 @@ class DisplayQuiz:
         print("end")
         random.shuffle(question_number)
         random.shuffle(congrats)
-        partner.current_question.config(text=("Question 0/10".format()))
-        partner.current_score.config(text=("Score: 0".format()))
-        partner.to_quiz_button.config(text="Start Quiz", state=NORMAL)
+        partner.current_question.config(text=("Question {}/10".format(questions_total)))
+        partner.current_score.config(text=("Score: {}".format(questions_right)))      
+        partner.current_question.config(text=("Question 0/10"))
+        partner.current_score.config(text=("Score: 0"))
+        partner.to_quiz_button.config(text=("Start Quiz"), state=NORMAL)
         
         with open('score.txt', 'r') as file:
             data = file.readlines()
-        data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {} ".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
+        data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}\n".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
         with open("score.txt", "w") as file:
-            file.writelines("{}".format(data))
+            file.writelines(data)
 
         with open('scoreboard.txt', 'r') as file:
             data = file.readlines()
