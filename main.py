@@ -1,11 +1,12 @@
 import random
+import os
 from functools import partial
 from tkinter import *
 
 #list of question for selecting
 question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
-with open("questions.txt", "r") as file:
+with open("data/questions.txt", "r") as file:
        list_of_questions = file.readlines()
 
 #list for answer randomizing
@@ -26,6 +27,8 @@ score = 0
 questions_right = 0
 questions_total = 0
 
+scoreboard_active = 0
+
 inc1 = ""
 inc2 = ""
 inc3 = ""
@@ -39,14 +42,19 @@ inc10 = ""
 
 class menu:
   def __init__(self):
+    global scoreboard_active
     
     #shuffle list options for first 10 questions
     random.shuffle(question_number)
 
-    with open('score.txt', 'w') as file:
+    with open('data/score.txt', 'w') as file:
         file.writelines("")
-    with open('scoreboard.txt', 'w') as file:
-        file.writelines("")
+    with open('data/scoreboard.txt', 'w') as file:
+        file.writelines("--\n--\n--\n--\n--\n--\n--\n--\n--\n--")
+    if os.path.exists("export_file.txt"):
+         os.remove("export_file.txt")
+        
+    scoreboard_active = 0
     
     #define grid layout
     self.main_frame = Frame(padx=6, pady=3)
@@ -81,7 +89,7 @@ class menu:
     
     #main frame row 3 = question number
     self.current_question = Label(self.main_frame,
-                              text="Question 0/10",
+                              text="Question: 0/10",
                               fg=button_fg,
                               font=(score_font),
                               justify=CENTER)
@@ -175,6 +183,8 @@ class DisplayHelp:
       self.dismiss_button = Button(self.help_frame,
                                  font=("Arial", "12", "bold"),
                                  text="Dismiss",
+                                 borderwidth=2,
+                                 relief=SOLID,
                                  command=partial(self.close_help,partner))
       self.dismiss_button.grid(row=2, padx=6, pady=6)
 
@@ -195,33 +205,185 @@ class DisplayScore:
        self.score_frame = Frame(self.score_box)
        self.score_frame.grid()
        self.result_frame = Frame(self.score_frame)
-       self.result_frame.grid(row=1, column=0)
+       self.result_frame.grid(row=1, column=0, padx=6, pady=6)
+       self.button_frame = Frame(self.score_frame)
+       self.button_frame.grid(row=2, column=0, padx=6, pady=6)
+
+       with open("data/scoreboard.txt", "r") as file:
+           scoreboard_list = file.readlines()
+        
+       s1 = scoreboard_list[0]
+       score1 = s1.strip()
+       s2 = scoreboard_list[1]
+       score2 = s2.strip()
+       s3 = scoreboard_list[2]
+       score3 = s3.strip()
+       s4 = scoreboard_list[3]
+       score4 = s4.strip()
+       s5 = scoreboard_list[4]
+       score5 = s5.strip()
+       s6 = scoreboard_list[5]
+       score6 = s6.strip()
+       s7 = scoreboard_list[6]
+       score7 = s7.strip()
+       s8 = scoreboard_list[7]
+       score8 = s8.strip()
+       s9 = scoreboard_list[8]
+       score9 = s9.strip()
+       s10 = scoreboard_list[9]
+       score10 = s10.strip()
 
        self.score_heading = Label(self.score_frame,
-                              text="Showing 10 Scores",
+                              text="Showing Last 10 Scores",
                               fg=button_fg,
-                              font=(title_font),
+                              font=("Arial", "16", "bold"),
                               justify=CENTER)
-       self.score_heading.grid(row=0, padx=6, pady=6)
+       self.score_heading.grid(row=0, padx=12, pady=18)
 
-       self.score_scores_1 = Label(self.result_frame,
-                              text="1 {}".format("FIX"),
+       self.score_label_1 = Label(self.result_frame,
+                              text="1: {}".format(score1),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
-       self.score_scores_1.grid(row=1, column=0, padx=40, pady=6)
+       self.score_label_1.grid(row=1, column=0, padx=40, pady=6)
 
-       self.score_scores_2 = Label(self.result_frame,
-                              text="2 {}".format("FIX"),
+       self.score_label_2 = Label(self.result_frame,
+                              text="2: {}".format(score2),
                               fg=button_fg,
                               font=(button_font),
                               justify=CENTER)
-       self.score_scores_2.grid(row=1, column=1, padx=40, pady=6)
+       self.score_label_2.grid(row=1, column=1, padx=40, pady=6)
+
+       self.score_label_3 = Label(self.result_frame,
+                              text="3: {}".format(score3),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_3.grid(row=2, column=0, padx=40, pady=6)
+
+       self.score_label_4 = Label(self.result_frame,
+                              text="4: {}".format(score4),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_4.grid(row=2, column=1, padx=40, pady=6)
+
+       self.score_label_5 = Label(self.result_frame,
+                              text="5: {}".format(score5),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_5.grid(row=3, column=0, padx=40, pady=6)
+
+       self.score_label_6 = Label(self.result_frame,
+                              text="6: {}".format(score6),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_6.grid(row=3, column=1, padx=40, pady=6)
+
+       self.score_label_7 = Label(self.result_frame,
+                              text="7: {}".format(score7),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_7.grid(row=4, column=0, padx=40, pady=6)
+
+       self.score_label_8 = Label(self.result_frame,
+                              text="8: {}".format(score8),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_8.grid(row=4, column=1, padx=40, pady=6)
+
+       self.score_label_9 = Label(self.result_frame,
+                              text="9: {}".format(score9),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_9.grid(row=5, column=0, padx=40, pady=6)
+
+       self.score_label_10 = Label(self.result_frame,
+                              text="10: {}".format(score10),
+                              fg=button_fg,
+                              font=(button_font),
+                              justify=CENTER)
+       self.score_label_10.grid(row=5, column=1, padx=40, pady=6)
+
+       self.dismiss_button = Button(self.button_frame,
+                                 font=("Arial", "12", "bold"),
+                                 text="Dismiss",
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=6,
+                                 command=partial(self.close_score,partner))
+       self.dismiss_button.grid(row=0, column=0, padx=4, pady=10)
+  
+       self.clear_button = Button(self.button_frame,
+                                 font=("Arial", "12", "bold"),
+                                 text="Clear",
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=6,
+                                 command=partial(self.clear_score,partner))
+       self.clear_button.grid(row=0, column=1, padx=4, pady=10)
+
+       self.export_button = Button(self.button_frame,
+                                 font=("Arial", "12", "bold"),
+                                 text="Export",
+                                 justify=CENTER,
+                                 borderwidth=2,
+                                 relief=SOLID,
+                                 width=6,
+                                 command=partial(self.export_score))
+       self.export_button.grid(row=0, column=2, padx=4, pady=10)
+
+       if scoreboard_active == 0:
+          self.export_button.config(state=DISABLED)
+          self.clear_button.config(state=DISABLED)
+       elif scoreboard_active == 1:
+          self.export_button.config(state=NORMAL)
+          self.clear_button.config(state=NORMAL)
 
 
   def close_score(self, partner):
       partner.to_score_button.config(state=NORMAL)
       self.score_box.destroy()
+
+  def export_score(self):
+      self.export_button.config(state=DISABLED)
+      self.export_button.after(1500,lambda:self.export_button.config(state=NORMAL))
+      
+      with open('data/score.txt', 'r') as file:
+        score_data = file.readlines()
+      try:
+        with open("export_file.txt", "x") as file:
+          file.writelines(score_data)
+      except:
+        with open('export_file.txt', 'w') as file:
+          file.writelines(score_data)
+
+  def clear_score(self, partner):
+      with open('data/scoreboard.txt', 'w') as file:
+          file.writelines("--\n--\n--\n--\n--\n--\n--\n--\n--\n--")
+      with open('data/score.txt', 'w') as file:
+          file.writelines("")
+      self.score_label_1.config(text="1: --")
+      self.score_label_2.config(text="2: --")
+      self.score_label_3.config(text="3: --")
+      self.score_label_4.config(text="4: --")
+      self.score_label_5.config(text="5: --")
+      self.score_label_6.config(text="6: --")
+      self.score_label_7.config(text="7: --")
+      self.score_label_8.config(text="8: --")
+      self.score_label_9.config(text="9: --")
+      self.score_label_10.config(text="10: --")
+      scoreboard_active = 0
+      self.export_button.config(state=DISABLED)
+      self.clear_button.config(state=DISABLED)
+      partner.quiz_results.config(text="")
 
 
 class DisplayQuiz:
@@ -251,19 +413,19 @@ class DisplayQuiz:
        print("{}".format(question_number[9]))
        print("")
 
-       with open("questions.txt", "r") as file:
+       with open("data/questions.txt", "r") as file:
            list_of_questions = file.readlines()
          
-       with open("answers(1).txt", "r") as file:
+       with open("data/answers(1).txt", "r") as file:
            list_of_answers_1 = file.readlines()
          
-       with open("answers(2).txt", "r") as file:
+       with open("data/answers(2).txt", "r") as file:
            list_of_answers_2 = file.readlines()
          
-       with open("answers(3).txt", "r") as file:
+       with open("data/answers(3).txt", "r") as file:
            list_of_answers_3 = file.readlines()
          
-       with open("answers(4).txt", "r") as file:
+       with open("data/answers(4).txt", "r") as file:
            list_of_answers_4 = file.readlines()
        
        q = list_of_questions[question_number[questions_total]]
@@ -352,6 +514,10 @@ class DisplayQuiz:
       global inc8
       global inc9
       global inc10
+      global scoreboard_active
+
+      q = list_of_questions[question_number[questions_total]]
+      question = q.strip()
     
       print("correct")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED)
@@ -359,62 +525,55 @@ class DisplayQuiz:
       self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
       self.quiz_d_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
     
-      questions_right += 1
       questions_total += 1
-      
+      questions_right += 1
+
       self.quiz_box.after(2500,lambda:self.quiz_box.destroy())
+      partner.current_question.config(text="Question: {}/10".format(questions_total))
       partner.current_score.config(text="Score: {}".format(questions_right))
-      partner.current_question.config(text="Question {}/10".format(questions_total))
 
       if questions_total >= 10:
         print("end")
+        scoreboard_active = 1
         random.shuffle(question_number)
-        random.shuffle(congrats)
-        partner.current_question.config(text=("Question 0/10".format()))
-        partner.current_score.config(text=("Score: 0".format()))
-        partner.to_quiz_button.config(text="Start Quiz", state=NORMAL)
+        random.shuffle(congrats)    
+        partner.current_question.config(text=("Question 0/10"))
+        partner.current_score.config(text=("Score: 0"))
+        partner.to_quiz_button.config(text=("Start Quiz"), state=NORMAL)
+        
+        with open('data/score.txt', 'r') as file:
+            data = file.readlines()
+        data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}\n".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
+        with open("data/score.txt", "w") as file:
+            file.writelines(data)
+
+        with open('data/scoreboard.txt', 'r') as file:
+            data = file.readlines()
+        data.insert(0, "{}/10\n".format(questions_right))
+        with open("data/scoreboard.txt", "w") as file:
+            file.writelines(data)
+
+        inc1 = ""
+        inc2 = ""
+        inc3 = ""
+        inc4 = ""
+        inc5 = ""
+        inc6 = ""
+        inc7 = ""
+        inc8 = ""
+        inc9 = ""
+        inc10 = ""
+        
         if questions_right >= 5:
           partner.quiz_results.config(text="{}! You got {}/10".format(congrats[1], questions_right))
-
-          with open('score.txt', 'r') as file:
-              data = file.readlines()
-          data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
-          with open("score.txt", "w") as file:
-              file.writelines(data)
-
-          inc1 = ""
-          inc2 = ""
-          inc3 = ""
-          inc4 = ""
-          inc5 = ""
-          inc6 = ""
-          inc7 = ""
-          inc8 = ""
-          inc9 = ""
-          inc10 = ""
         
         else:
           partner.quiz_results.config(text="Nice try, you got {}/10".format(questions_right))
-          with open('score.txt', 'r') as file:
-              data = file.readlines()
-          data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
-          with open("score.txt", "w") as file:
-              file.writelines(data)
-
-          inc1 = ""
-          inc2 = ""
-          inc3 = ""
-          inc4 = ""
-          inc5 = ""
-          inc6 = ""
-          inc7 = ""
-          inc8 = ""
-          inc9 = ""
-          inc10 = ""
-          
+        
         questions_total = 0
         questions_right = 0
-      
+
+          
       else:
         partner.quiz_results.config(text="")
         partner.to_quiz_button.config(text="Continue Quiz", state=NORMAL)
@@ -433,7 +592,8 @@ class DisplayQuiz:
       global inc7
       global inc8
       global inc9
-      global inc10     
+      global inc10
+      global scoreboard_active
 
       q = list_of_questions[question_number[questions_total]]
       question = q.strip()
@@ -468,29 +628,28 @@ class DisplayQuiz:
         inc10 = question
 
       self.quiz_box.after(2500,lambda:self.quiz_box.destroy())
-      partner.current_question.config(text="Question {}/10".format(questions_total))
+      partner.current_question.config(text="Question: {}/10".format(questions_total))
 
       if questions_total >= 10:
         print("end")
+        scoreboard_active = 1
         random.shuffle(question_number)
-        random.shuffle(congrats)
-        partner.current_question.config(text=("Question {}/10".format(questions_total)))
-        partner.current_score.config(text=("Score: {}".format(questions_right)))      
+        random.shuffle(congrats)    
         partner.current_question.config(text=("Question 0/10"))
         partner.current_score.config(text=("Score: 0"))
         partner.to_quiz_button.config(text=("Start Quiz"), state=NORMAL)
         
-        with open('score.txt', 'r') as file:
+        with open('data/score.txt', 'r') as file:
             data = file.readlines()
         data.insert(0, "{}/10. Incorrect Questions: {} {} {} {} {} {} {} {} {} {}\n".format(questions_right, inc1, inc2, inc3, inc4, inc5, inc6, inc7, inc8, inc9, inc10))
-        with open("score.txt", "w") as file:
+        with open("data/score.txt", "w") as file:
             file.writelines(data)
 
-        with open('scoreboard.txt', 'r') as file:
+        with open('data/scoreboard.txt', 'r') as file:
             data = file.readlines()
-        data.insert(0, "{}/10".format(questions_right))
-        with open("scoreboard.txt", "w") as file:
-            file.writelines("{}".format(data))
+        data.insert(0, "{}/10\n".format(questions_right))
+        with open("data/scoreboard.txt", "w") as file:
+            file.writelines(data)
 
         inc1 = ""
         inc2 = ""
