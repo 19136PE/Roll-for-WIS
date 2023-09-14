@@ -342,10 +342,8 @@ class DisplayScore:
 
        if scoreboard_active == 0:
           self.export_button.config(state=DISABLED)
-          self.clear_button.config(state=DISABLED)
        elif scoreboard_active == 1:
           self.export_button.config(state=NORMAL)
-          self.clear_button.config(state=NORMAL)
 
 
   def close_score(self, partner):
@@ -366,6 +364,10 @@ class DisplayScore:
           file.writelines(score_data)
 
   def clear_score(self, partner):
+      global questions_total
+      global questions_right
+      global scoreboard_active
+      
       with open('data/scoreboard.txt', 'w') as file:
           file.writelines("--\n--\n--\n--\n--\n--\n--\n--\n--\n--")
       with open('data/score.txt', 'w') as file:
@@ -382,8 +384,9 @@ class DisplayScore:
       self.score_label_10.config(text="10: --")
       scoreboard_active = 0
       self.export_button.config(state=DISABLED)
-      self.clear_button.config(state=DISABLED)
       partner.quiz_results.config(text="")
+      self.clear_button.config(state=DISABLED)
+      self.clear_button.after(1500, lambda:self.clear_button.config(state=NORMAL))
 
 
 class DisplayQuiz:
@@ -678,6 +681,9 @@ class DisplayQuiz:
   
   def close_quiz(self, partner):
       partner.to_quiz_button.config(state=NORMAL)
+      self.quiz_box.destroy()
+  
+  def close_quiz_2(self):
       self.quiz_box.destroy()
   
 #main rouine
