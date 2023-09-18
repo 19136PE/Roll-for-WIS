@@ -3,29 +3,29 @@ Bard
 Insight
 Intelligence
 d8 +/- your WIS
-a5 (4)
-a6 (4)
-a7 (4)
-a8 (4)
-a9 (4)
-a10 (4)
-a11 (4)
-a12 (4)
-a13 (4)
-a14 (4)
-a15 (4)
-a16 (4)
-a17 (4)
-a18 (4)
-a19 (4)
-a20 (4)
-a21 (4)
-a22 (4)
-a23 (4)
-a24 (4)
-a25 (4)
-a26 (4)
-a27 (4)
-a28 (4)
-a29 (4)
-a30 (4)
+Strength
+Dexterity
+Strength
+Dexterity
+Silver
+10
+5
+You stabilize
+Perfect roll
+Unsheathe weapon
+Teifling
+Paladin
+8
+Intimidate
+ARC
+A spellbook
+Strength
+You crit them
+10 sec
+Transmutation
+Endurance
+Armor class
+8 min
+Constitution
+Dexterity
+Dexterity

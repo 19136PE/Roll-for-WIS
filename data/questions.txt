@@ -1,31 +1,31 @@
 vv  Questions go Below  vv
-Which of the following classes does NOT have a hit di of d8?
-The Wisdom Stat affects all of the following skills EXCEPT?
+Which of the following classes does NOT have a hit-die of d8?
+The Wisdom stat affects all of the following skills EXCEPT?
 Which of the following is NOT one of the six basic stats?
-How do you roll for Initiative?
-q5?
-q6?
-q7?
-q8?
-q9?
-q10?
-q11?
-q12?
-q13?
-q14?
-q15?
-q16?
-q17?
-q18?
-q19?
-q20?
-q21?
-q22?
-q23?
-q24?
-q25?
-q26?
-q27?
-q28?
-q29?
-q30?
+What do you roll for Initiative?
+What does a Sorcerer's spellcasting modifier scale with?
+What does a Rogue's spellcasting modifier scale with?
+What does a Druid's spellcasting modifier scale with?
+What does a Ranger's spellcasting modifier scale with?
+What one is NOT a Dragonborn color?
+How many base classes are there?
+How many base races are there?
+What is the result of rolling a 1 when rolling on a Death-Saving Throw?
+You roll a 20 on a 20 sided die. This is known as?
+Which of these actions can be performed when it is NOT your turn?
+Which of these is NOT a race in D&D?
+Which of these is NOT a class in D&D?
+What is the max sided dice in a standard D&D dice set?
+Barbarians have an ability giving them extra damage. This ability is?
+STR, DEX, INT, WIS, CHA. What's missing?
+How do Clerics get their spells?
+To hit an opponent, you roll a d20 or sometimes they roll ____?
+If an opponents AC is 14, and you roll 14 on your attack roll, what happens?
+How long is a round of combat?
+What one is NOT a school of magic?
+If you are travelling between two locations, your DM can roll on the ____ table?
+What stat determines your health?
+How long does it take to equip heavy armor?
+What stat affects the Persuasion skill-check modifier?
+What stat affects the Nature skill-check modifier?
+What stat affects the Arcana skill-check modifier?

@@ -3,29 +3,29 @@ Druid
 Medicine
 Charisma
 d10 +/- your DEX
-a5 (3)
-a6 (3)
-a7 (3)
-a8 (3)
-a9 (3)
-a10 (3)
-a11 (3)
-a12 (3)
-a13 (3)
-a14 (3)
-a15 (3)
-a16 (3)
-a17 (3)
-a18 (3)
-a19 (3)
-a20 (3)
-a21 (3)
-a22 (3)
-a23 (3)
-a24 (3)
-a25 (3)
-a26 (3)
-a27 (3)
-a28 (3)
-a29 (3)
-a30 (3)
+Wisdom
+Wisdom
+Intelligence
+Intelligence
+Brass
+5
+4
+You fail the roll
+Epic roll
+Save a ally
+Hill Dwarf
+Monk
+12
+Temper
+WIT
+From spell-scrolls
+Dexterity
+Deal half damage
+8 sec
+Enchantment
+Exhaustion
+Dexterity
+6 min
+Intelligence
+Constitution
+Constitution

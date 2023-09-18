@@ -3,15 +3,17 @@ import os
 from functools import partial
 from tkinter import *
 
-#list of question for selecting
+#list of question for selecting questions
 question_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
+#creates a list with data from questions document
 with open("data/questions.txt", "r") as file:
        list_of_questions = file.readlines()
 
 #list for answer randomizing
 random_answer = [1, 2, 3, 4]
 
+#list to randomize quiz finishing congrats text on menu
 congrats = ["Congrats", "Congradulations", "Ka Pai", "Good Work", "Amazing", "WOOOOOO", "Outstanding", "Nothing can stop you"]
 
 #common format for all labels and buttons
@@ -27,8 +29,10 @@ score = 0
 questions_right = 0
 questions_total = 0
 
+#used to enable and disable clear and export buttons on score screen
 scoreboard_active = 0
 
+#variables used to keep incorrect questions for exporting
 inc1 = ""
 inc2 = ""
 inc3 = ""
@@ -40,13 +44,16 @@ inc8 = ""
 inc9 = ""
 inc10 = ""
 
+
 class menu:
   def __init__(self):
+    #used to enable and disable clear and export buttons on score screen
     global scoreboard_active
-    
+
     #shuffle list options for first 10 questions
     random.shuffle(question_number)
 
+    #when code is run, clears (score.txt), (scoreboard.txt), and deletes (export_file.txt) if it exists
     with open('data/score.txt', 'w') as file:
         file.writelines("")
     with open('data/scoreboard.txt', 'w') as file:
@@ -54,6 +61,7 @@ class menu:
     if os.path.exists("export_file.txt"):
          os.remove("export_file.txt")
         
+    #disables
     scoreboard_active = 0
     
     #define grid layout
@@ -152,6 +160,7 @@ class menu:
   
 class DisplayHelp:
   def __init__(self, partner):
+
       self.help_box = Toplevel()
 
       partner.to_help_button.config(state=DISABLED)
@@ -195,6 +204,7 @@ class DisplayHelp:
 
 class DisplayScore:
   def __init__(self, partner):
+       
        self.score_box = Toplevel()
 
        partner.to_score_button.config(state=DISABLED)
@@ -327,6 +337,7 @@ class DisplayScore:
                                  borderwidth=2,
                                  relief=SOLID,
                                  width=6,
+                                 state=DISABLED,
                                  command=partial(self.clear_score,partner))
        self.clear_button.grid(row=0, column=1, padx=4, pady=10)
 
@@ -403,18 +414,6 @@ class DisplayQuiz:
   
        self.quiz_frame = Frame(self.quiz_box)
        self.quiz_frame.grid()
-
-       print("{}".format(question_number[0]))
-       print("{}".format(question_number[1]))
-       print("{}".format(question_number[2]))
-       print("{}".format(question_number[3]))
-       print("{}".format(question_number[4]))
-       print("{}".format(question_number[5]))
-       print("{}".format(question_number[6]))
-       print("{}".format(question_number[7]))
-       print("{}".format(question_number[8]))
-       print("{}".format(question_number[9]))
-       print("")
 
        with open("data/questions.txt", "r") as file:
            list_of_questions = file.readlines()
@@ -522,7 +521,6 @@ class DisplayQuiz:
       q = list_of_questions[question_number[questions_total]]
       question = q.strip()
     
-      print("correct")
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED)
       self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
       self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
@@ -536,7 +534,6 @@ class DisplayQuiz:
       partner.current_score.config(text="Score: {}".format(questions_right))
 
       if questions_total >= 10:
-        print("end")
         scoreboard_active = 1
         random.shuffle(question_number)
         random.shuffle(congrats)    
@@ -600,8 +597,8 @@ class DisplayQuiz:
 
       q = list_of_questions[question_number[questions_total]]
       question = q.strip()
-    
-      print("incorrect")
+
+  
       self.quiz_a_button.config(highlightbackground="#50C878", highlightthickness=3, state=DISABLED)
       self.quiz_b_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
       self.quiz_c_button.config(highlightbackground="#C80815", highlightthickness=2, state=DISABLED)
@@ -634,7 +631,6 @@ class DisplayQuiz:
       partner.current_question.config(text="Question: {}/10".format(questions_total))
 
       if questions_total >= 10:
-        print("end")
         scoreboard_active = 1
         random.shuffle(question_number)
         random.shuffle(congrats)    
@@ -688,6 +684,7 @@ class DisplayQuiz:
   
 #main rouine
 root = Tk()
+root.resizable(False, False)
 root.title("Roll for WIS")
 menu()
 root.mainloop()

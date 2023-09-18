@@ -3,29 +3,29 @@ Warlock
 Survival
 Constitution
 d12 +/- your WIS
-a5 (2)
-a6 (2)
-a7 (2)
-a8 (2)
-a9 (2)
-a10 (2)
-a11 (2)
-a12 (2)
-a13 (2)
-a14 (2)
-a15 (2)
-a16 (2)
-a17 (2)
-a18 (2)
-a19 (2)
-a20 (2)
-a21 (2)
-a22 (2)
-a23 (2)
-a24 (2)
-a25 (2)
-a26 (2)
-a27 (2)
-a28 (2)
-a29 (2)
-a30 (2)
+Intelligence
+Charisma
+Charisma
+Charisma
+Copper
+6
+9
+Instant death
+Super roll
+Movement
+Halfling
+Ranger
+100
+Fury
+SAV
+Ritual dance
+Initiative
+You don't hit them
+4 sec
+Divination
+Terrain
+Strength
+1 action
+Wisdom
+Wisdom
+Wisdom
